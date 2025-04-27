@@ -1,0 +1,20 @@
+{
+  "name": "gihary",
+  "version": "1.0.0",
+  "description": "Gihary Assistant - Personal AI evolving project",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "Luigi Borriello",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0"
+  },
+  "devDependencies": {
+    "electron": "^35.2.1"
+  }
+}
+

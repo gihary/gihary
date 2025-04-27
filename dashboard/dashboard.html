@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gihary - Dashboard Evolutiva 📈🤖</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f5f7fa;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    #changelog {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .entry {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #e8f0fe;
+      border-radius: 8px;
+    }
+    .entry strong {
+      color: #1a73e8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 Gihary - Evoluzione Live</h1>
+
+  <div id="changelog">
+    <p>Caricamento in corso...</p>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    async function loadChangelog() {
+      const changelog = await ipcRenderer.invoke('load-changelog');
+      const container = document.getElementById('changelog');
+      container.innerHTML = '';
+
+      if (changelog.length === 0) {
+        container.innerHTML = '<p>Nessun aggiornamento registrato ancora.</p>';
+        return;
+      }
+
+      changelog.reverse().forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `
+          <strong>🛠 Modulo:</strong> ${entry.modulo}<br>
+          <strong>⚡ Fonte:</strong> ${entry.fonte}<br>
+          <strong>📝 Descrizione:</strong> ${entry.descrizione}<br>
+          <small>⏰ ${new Date(entry.timestamp).toLocaleString()}</small>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    loadChangelog();
+    setInterval(loadChangelog, 5000); // Aggiorna ogni 5 secondi
+  </script>
+
+</body>
+</html>
+

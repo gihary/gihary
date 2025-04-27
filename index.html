@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gihary Assistant</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
+
+  <h1>Gihary 🤖</h1>
+
+  <input id="userInput" type="text" placeholder="Scrivi la tua domanda..." style="width: 60%; padding: 10px;" />
+  <button onclick="sendPrompt()">Invia</button>
+
+  <div id="response" style="margin-top: 30px;"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    async function sendPrompt() {
+      const input = document.getElementById('userInput').value;
+      const resDiv = document.getElementById('response');
+
+      if (!input.trim()) {
+        resDiv.innerText = "Scrivi qualcosa!";
+        return;
+      }
+
+      resDiv.innerText = "Gihary sta pensando...";
+
+      try {
+        const risposta = await ipcRenderer.invoke('user-prompt', input);
+        resDiv.innerText = risposta || "Errore nella risposta.";
+      } catch (error) {
+        resDiv.innerText = "Errore: " + error.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
